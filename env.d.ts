@@ -3,6 +3,6 @@ declare namespace NodeJS {
         PORT: number,
         CORS_ORIGIN: string,
         DATABASE_URL: string
-
+        JWT_SECRET: string;
     }
 }

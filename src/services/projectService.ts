@@ -7,9 +7,13 @@ const prisma = new PrismaClient();
 const ProjectService = {
 
     create: async (name: string, dueDate: Date, userId: string, description: string): Promise<Project> => {
-        return prisma.project.create({
-            data: { name, dueDate, userId, description }
-        })
+        try {
+            return prisma.project.create({
+                data: { name, dueDate, userId, description }
+            })
+        } catch (error) {
+            throw error;
+        }
     },
 
     findAll: async () => {
