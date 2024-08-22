@@ -8,7 +8,7 @@ const AuthMiddleware = {
     
     requireAuth: async (req: AppRequest, res: Response, next: NextFunction) => {
         try {
-            const authToken = req.headers.get('authorization')?.split(' ')[1];
+            const authToken = req.headers['authorization']?.split(' ')[1];
             if (!authToken) {
                 return res.status(401).json({ error: "Unauthorized!" });
             }

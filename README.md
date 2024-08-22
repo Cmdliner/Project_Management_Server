@@ -1,15 +1,53 @@
-# project_management_server
+# Project_Management_Server
 
+## PROJECT SETUP
+- Initialize a database with MySQL and get connection string
+
+### Using NPM:
+To install dependencies:
+
+```bash
+npm install
+```
+
+To create env file:
+
+```bash
+npm run createEnv
+```
+
+
+```
+Go into the env file and setup key
+```
+
+To run:
+
+```bash
+tsc && npm run src/app.ts
+```
+
+### Using bun:
 To install dependencies:
 
 ```bash
 bun install
 ```
 
+To create env file:
+```bash
+bun run createEnv:bun
+```
+
+```
+Go into the env file and setup key
+```
+
 To run:
 
 ```bash
-bun run app.ts
+bun run dev:bun
 ```
 
-This project was created using `bun init` in bun v1.1.21. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+## TODO
+- Data validation with joi

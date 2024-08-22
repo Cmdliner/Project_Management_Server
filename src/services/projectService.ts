@@ -1,5 +1,6 @@
 import { type Project, Prisma, PrismaClient } from "@prisma/client";
 import type { ProjectFilterParams } from "../interfaces/FilterProject";
+import project from "../routes/project";
 
 const prisma = new PrismaClient();
 
@@ -16,12 +17,21 @@ const ProjectService = {
         }
     },
 
+    find: async (id: string) => {
+        return prisma.project.findUniqueOrThrow({ where: { id } });
+    },
+
     findAll: async () => {
         return prisma.project.findMany();
     },
 
     findByUser(userId: string) {
-        return prisma.project.findMany({ where: { userId }, include: { tasks: true } });
+        try {
+            return prisma.project.findMany({ where: { userId }, include: { tasks: true } });
+        } catch (error) {
+            throw error;
+        }
+
     },
 
     filter: async (filterParams: ProjectFilterParams) => {
@@ -44,8 +54,14 @@ const ProjectService = {
         return projects;
     },
 
-    remove: async(projectId: string) => {
-        return prisma.project.delete({where: { id: projectId }});
+    remove: async (userId: string, projectId: string) => {
+        try {
+            return prisma.project.delete({ where: { id: projectId, userId } });
+        } catch (error) {
+            throw error;
+        }
+
+
     }
 
 }

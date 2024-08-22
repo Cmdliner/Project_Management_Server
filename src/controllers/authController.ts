@@ -9,7 +9,7 @@ const AuthController = {
 
     register: async (req: AppRequest, res: Response) => {
         try {
-            const { username, password }: UserBody = req.body as any as UserBody;
+            const { username, password }: UserBody = req.body as UserBody;
             if (!username || !password) {
                 return res.status(422).json({ error: `${username ? 'username' : 'password'} required!` })
             }
@@ -25,7 +25,7 @@ const AuthController = {
 
     login: async (req: AppRequest, res: Response) => {
         try {
-            const { username, password }: UserBody = req.body as any;
+            const { username, password }: UserBody = req.body;
             const user = await UserService.findByUsername(username);
             if (!user) {
                 return res.status(404).json({ error: "User not found" });

@@ -3,8 +3,12 @@
   "module": "app.ts",
   "type": "module",
   "scripts": {
-    "dev": "bun --watch src/app.ts",
-    "build": "bun src/app.ts"
+    "dev": "tsc && node src/app.ts",
+    "dev:bun": "bun --watch src/app.ts",
+    "build": "tsc && node src/app.ts",
+    "build:bun": "bun src/app.ts",
+    "createEnv:bun": "bun scripts/create_env.js",
+    "createEnv": "node scripts/create_env.js"
   },
   "devDependencies": {
     "@types/bun": "latest",

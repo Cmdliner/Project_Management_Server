@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.use(`${API_VERSION}/auth`, auth);
-app.use(`${API_VERSION}/project`, AuthMiddleware.requireAuth as any, project);
+app.use(`${API_VERSION}/project`, AuthMiddleware.requireAuth, project);
 
 app.get('/healthz', (_: Request, res: Response) => { res.status(200).json("Server is up and running") });
 
