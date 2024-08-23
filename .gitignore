@@ -178,3 +178,4 @@ dist
 # env
 .env*
 .env
+.env.production
