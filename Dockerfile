@@ -12,10 +12,6 @@ COPY . .
 
 EXPOSE 4000
 
-
-
-RUN ["bunx", "prisma", "init"]
-
 RUN ["bunx", "prisma", "generate"]
 
 CMD [ "bun", "run", "build:bun"]

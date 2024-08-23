@@ -1,6 +1,6 @@
 import { type Project, Prisma, PrismaClient } from "@prisma/client";
 import type { ProjectFilterParams } from "../interfaces/FilterProject";
-import type { ProjectBody, ProjectUpdatable } from "../interfaces/ProjectBody";
+import type { ProjectUpdatable } from "../interfaces/ProjectBody";
 
 const prisma = new PrismaClient();
 
@@ -67,18 +67,8 @@ const ProjectService = {
     },
 
     remove: async (userId: string, projectId: string) => {
-        try {
-            return prisma.project.delete({ where: { id: projectId, userId } });
-        } catch (error) {
-            throw error;
-        }
-
-
+        return prisma.project.delete({ where: { id: projectId, userId } });
     }
-
+    
 }
-
 export default ProjectService;
-
-
-
