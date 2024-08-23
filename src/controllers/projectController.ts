@@ -1,15 +1,17 @@
 import type { Response } from "express";
 import type { AppRequest } from "../interfaces/AppRequest";
 import ProjectService from "../services/projectService";
-import type { TaskBody } from "../interfaces/Task";
+import type { TaskBody, TaskUpdatable } from "../interfaces/Task";
 import TaskService from "../services/taskService";
+import type { ProjectUpdatable } from "../interfaces/ProjectBody";
+
 
 const ProjectController = {
     create: async (req: AppRequest, res: Response) => {
         try {
             const { name, description, dueDate } = req.body;
             await ProjectService.create(name, dueDate, req.user?.id as string, description);
-            return res.status(201).json({ success: "User creation successful" });
+            return res.status(201).json({ success: "Project creation successful" });
         } catch (error) {
             console.error(error);
             return res.status(500).json({ error: "Error creating project" });
@@ -27,9 +29,33 @@ const ProjectController = {
 
     },
 
-    // !TODO => Update projects
     update: async (req: AppRequest, res: Response) => {
+        try {
+            const { projectID } = req.params;
+            const { name, description, dueDate } = req.body;
+            const updateData: Partial<Pick<ProjectUpdatable, 'name' | 'description' | 'dueDate'>> = {};
 
+            // !TODO => VALIDATION WITH JOI?
+            if (name) updateData.name = name;
+            if (description) updateData.description = description;
+            if (dueDate) updateData.dueDate = dueDate;
+
+            const updatedProject = await ProjectService.update(projectID, updateData);
+            return res
+                .status(200)
+                .json({
+                    success: "Project updated successcfully",
+                    project: updatedProject,
+                });
+
+
+        } catch (error) {
+            if ((error as Error).name === "PrismaClientValidationError") {
+                return res.status(422).json({ error: "Error validating project update body" })
+            }
+            console.error(error);
+            return res.status(500).json({ error: "Error updating project" });
+        }
     },
 
     delete: async (req: AppRequest, res: Response) => {
@@ -53,18 +79,18 @@ const ProjectController = {
             if (!name || !description || !status) {
                 return res.status(422).json({ error: "Username, description and status are required" });
             }
-            const task: Partial<TaskBody> = {name, description, userId, projectId: projectID};
+            const task: Partial<TaskBody> = { name, description, userId, projectId: projectID };
             const acceptedStatus = ['pending', 'completed', 'ongoing'];
             const validStatus = !!acceptedStatus.find((accepted) => accepted === status as string);
-            if(!validStatus) {
-                return res.status(422).json({ error: "Invalid task status!"});
+            if (!validStatus) {
+                return res.status(422).json({ error: "Invalid task status!" });
             }
             task.status = status;
-            const newTask  = await TaskService.create(task as TaskBody);
+            const newTask = await TaskService.create(task as TaskBody);
 
-            return res.status(201).json({success: "Task added successfully", task: newTask});
-            
-            
+            return res.status(201).json({ success: "Task added successfully", task: newTask });
+
+
         } catch (error) {
             console.error(error);
             return res.status(500).json({ error: "Error adding task!" });
@@ -73,11 +99,40 @@ const ProjectController = {
 
     },
 
-    updateTask: (req: AppRequest, res: Response) => { },
+    updateTask: async (req: AppRequest, res: Response) => {
+        try {
+            const { taskID } = req.params;
+            const { name, description, status } = req.body;
+            const userId = req.user?.id as string;
+            if (!name && !description && !status) {
+                return res.status(422).json({ error: "One of username, description or status expected" });
+            }
+            const taskUpdateData: TaskUpdatable = {};
+            if (name) taskUpdateData.name = name;
+            if (description) taskUpdateData.description = description;
+            if (status) taskUpdateData.status = status;
 
-    deleteTask: (req: AppRequest, res: Response) => { }
+            const updatedTask = await TaskService.update(taskID, userId, taskUpdateData);
+            return res.status(200).json({ error: "Task updated successfully" })
 
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ error: "Error updating task" });
+        }
+    },
 
+    deleteTask: async (req: AppRequest, res: Response) => {
+        try {
+            const { taskID } = req.params;
+            const userId = req.user?.id as string;
+
+            const deletedTask = await TaskService.remove(taskID, userId);
+            return res.status(200).json({ success: "Task deleted successfully", task: deletedTask })
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ error: "Error deleting task" });
+        }
+    }
 
 }
 

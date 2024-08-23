@@ -4,3 +4,5 @@ export interface ProjectBody {
     dueDate: string;
     userId: string;
 }
+
+export type ProjectUpdatable = Partial<Pick<ProjectBody, 'name' | 'description' | 'dueDate'>>;

@@ -51,3 +51,4 @@ bun run dev:bun
 
 ## TODO
 - Data validation with joi
+- tests (Ensure duedate cannot be in the past)

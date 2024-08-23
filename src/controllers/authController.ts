@@ -36,6 +36,7 @@ const AuthController = {
             }
             const authToken = CreateToken({ id: user.id, username: user.username });
             res.setHeader("Authorization", `Bearer ${authToken}`);
+            return res.status(200).json({success: "Login successful!" })
         } catch (error) {
             console.error(error);
             return res.status(500).json({ error: "Error signing in user" });

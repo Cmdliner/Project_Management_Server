@@ -5,3 +5,5 @@ export interface TaskBody {
     projectId: string;
     userId: string;
 }
+
+export type TaskUpdatable = Partial<Pick<TaskBody, 'name' | 'description' | 'status'>>

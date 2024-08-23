@@ -1,6 +1,6 @@
 import { type Project, Prisma, PrismaClient } from "@prisma/client";
 import type { ProjectFilterParams } from "../interfaces/FilterProject";
-import project from "../routes/project";
+import type { ProjectBody, ProjectUpdatable } from "../interfaces/ProjectBody";
 
 const prisma = new PrismaClient();
 
@@ -52,6 +52,18 @@ const ProjectService = {
         }
 
         return projects;
+    },
+
+    update: async (projectId: string, { name, description, dueDate }: ProjectUpdatable) => {
+        const updateData: ProjectUpdatable = {};
+        if (name) { updateData.name = name }
+        if (description) { updateData.description = description }
+        if (dueDate) { updateData.dueDate = dueDate }
+
+        return prisma.project.update({
+            where: { id: projectId },
+            data: updateData
+        });
     },
 
     remove: async (userId: string, projectId: string) => {
