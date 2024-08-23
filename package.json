@@ -6,13 +6,14 @@
     "dev": "tsc && node src/app.ts",
     "dev:bun": "bun --watch src/app.ts",
     "build": "tsc && node src/app.ts",
-    "build:bun": "bun src/app.ts",
+    "build:bun": "bunx prisma generate && bun src/app.ts",
     "createEnv:bun": "bun scripts/create_env.js",
     "createEnv": "node scripts/create_env.js"
   },
   "devDependencies": {
     "@types/bun": "latest",
     "@types/cors": "^2.8.17",
+    "@types/joi": "^17.2.3",
     "@types/jsonwebtoken": "^9.0.6",
     "prisma": "^5.18.0"
   },
@@ -25,6 +26,7 @@
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2"
   }
 }
