@@ -9,30 +9,13 @@ import type { ProjectUpdatable } from "../interfaces/ProjectBody";
 const ProjectController = {
     create: async (req: AppRequest, res: Response) => {
         try {
-            const { name, description, dueDate, status } = req.body;
-            await ProjectService.create(name, dueDate, req.user?.id as string, status, description);
+            const { name, description, dueDate } = req.body;
+            await ProjectService.create(name, dueDate, req.user?.id as string, description);
             return res.status(201).json({ success: "Project creation successful" });
         } catch (error) {
             console.error(error);
             return res.status(500).json({ error: "Error creating project" });
         }
-    },
-
-    findById: async (req: AppRequest, res: Response) => {
-        try {
-            const userId = req.user?.id as string;
-            const { projectID } = req.params;
-            const project = await ProjectService.find(projectID, userId);
-            if (!project) {
-                return res.status(404).json({ error: "Project not found" })
-            }
-            return res.status(200).json({ success: "Project found", project })
-        } catch (error) {
-            console.error(error);
-            return res.status(500).json({ error: "Error fetching user details" });
-        }
-
-
     },
 
     findByUser: async (req: AppRequest, res: Response) => {

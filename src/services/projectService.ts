@@ -7,12 +7,18 @@ const prisma = new PrismaClient();
 
 const ProjectService = {
 
-    create: async (name: string, dueDate: Date, userId: string, status: string, description: string): Promise<Project> => {
-        return prisma.project.create({ data: { name, dueDate, userId, status, description } });
+    create: async (name: string, dueDate: Date, userId: string, description: string): Promise<Project> => {
+        try {
+            return prisma.project.create({
+                data: { name, dueDate, userId, description }
+            })
+        } catch (error) {
+            throw error;
+        }
     },
 
-    find: async (id: string, userId: string) => {
-        return prisma.project.findFirst({ where: { id, userId }, include: { tasks: true } });
+    find: async (id: string) => {
+        return prisma.project.findUniqueOrThrow({ where: { id } });
     },
 
     findAll: async () => {
@@ -20,7 +26,12 @@ const ProjectService = {
     },
 
     findByUser(userId: string) {
-        return prisma.project.findMany({ where: { userId }, include: { tasks: true } });
+        try {
+            return prisma.project.findMany({ where: { userId }, include: { tasks: true } });
+        } catch (error) {
+            throw error;
+        }
+
     },
 
     filter: async (filterParams: ProjectFilterParams) => {
@@ -58,6 +69,6 @@ const ProjectService = {
     remove: async (userId: string, projectId: string) => {
         return prisma.project.delete({ where: { id: projectId, userId } });
     }
-
+    
 }
 export default ProjectService;

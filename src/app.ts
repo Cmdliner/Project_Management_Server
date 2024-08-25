@@ -1,18 +1,12 @@
 import express, { type Request, type Response } from "express";
-import cors, { type CorsOptions } from "cors";
+import cors from "cors";
 import auth from "./routes/auth";
 import AuthMiddleware from "./middlewares/auth";
 import project from "./routes/project";
 const app = express();
 
 const API_VERSION = '/api/v1';
-const corsOptions: CorsOptions = {
-    exposedHeaders: ["Authorization"],
-    methods: "*",
-    credentials: true,
-    origin: process.env.CORS_ORIGIN
-}
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

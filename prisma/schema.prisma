@@ -27,7 +27,6 @@ model User {
 model Project {
   id          String   @id @default(uuid())
   name        String
-  status      String
   description String
   dueDate     DateTime
   createdAt   DateTime @default(now())
