@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(`${API_VERSION}/auth`, auth);
 app.use(`${API_VERSION}/project`, AuthMiddleware.requireAuth, project);
 
-app.get('/healthz', (_: Request, res: Response) => res.status(200).json("Server is up and running") );
+app.get('/healthz', (_: Request, res: Response) => res.status(200).json({active: "Server is up and running"}) );
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {

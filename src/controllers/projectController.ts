@@ -10,29 +10,29 @@ import { projectCreateValidation } from "../validations/project.validation";
 const ProjectController = {
     create: async (req: AppRequest, res: Response) => {
         try {
-          const { name, description, dueDate, status }: ProjectBody = req.body;
-          const { error } = projectCreateValidation.validate({
-            name,
-            description,
-            status,
-            dueDate,
-          });
-          if (error) {
-            return res.status(422).json({ error: error.details[0].message });
-          }
-          await ProjectService.create(
-            name,
-            dueDate,
-            req.user?.id as string,
-            status,
-            description
-          );
-          return res
-            .status(201)
-            .json({ success: "Project creation successful" });
+            const { name, description, dueDate, status }: ProjectBody = req.body;
+            const { error } = projectCreateValidation.validate({
+                name,
+                description,
+                status,
+                dueDate,
+            });
+            if (error) {
+                return res.status(422).json({ error: error.details[0].message });
+            }
+            await ProjectService.create(
+                name,
+                dueDate,
+                req.user?.id as string,
+                status,
+                description
+            );
+            return res
+                .status(201)
+                .json({ success: "Project creation successful" });
         } catch (error) {
-          console.error(error);
-          return res.status(500).json({ error: "Error creating project" });
+            console.error(error);
+            return res.status(500).json({ error: "Error creating project" });
         }
     },
 
@@ -74,7 +74,7 @@ const ProjectController = {
             if (name) updateData.name = name;
             if (description) updateData.description = description;
             if (dueDate) updateData.dueDate = dueDate;
-            if(status) updateData.status = status;
+            if (status) updateData.status = status;
 
             const updatedProject = await ProjectService.update(projectID, updateData);
             return res
