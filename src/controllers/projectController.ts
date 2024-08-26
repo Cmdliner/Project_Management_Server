@@ -103,7 +103,7 @@ const ProjectController = {
                 return res.status(422).json({ error: "Invalid task status!" });
             }
             task.status = status;
-            const newTask = await TaskService.create(task as TaskBody);
+            const newTask = await TaskService.create(task as TaskBody, userId);
 
             return res.status(201).json({ success: "Task added successfully", task: newTask });
 

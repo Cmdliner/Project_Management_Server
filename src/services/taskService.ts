@@ -6,9 +6,9 @@ import UserService from "./userService";
 const prisma = new PrismaClient();
 
 const TaskService = {
-    create: async (task: TaskBody): Promise<Task> => {
+    create: async (task: TaskBody, userId: string): Promise<Task> => {
         try {
-            await ProjectService.find(task.projectId);
+            await ProjectService.find(task.projectId, userId);
             await UserService.findById(task.userId);
             return prisma.task.create({ data: task });
         } catch (error) {
