@@ -8,7 +8,7 @@ const app = express();
 const API_VERSION = '/api/v1';
 const corsOptions: CorsOptions = {
     exposedHeaders: ["Authorization"],
-    methods: "*",
+    methods: ['POST', 'PUT', 'PATCH', 'GET', 'HEAD', 'OPTIONS', 'DELETE'],
     credentials: true,
     origin: process.env.CORS_ORIGIN
 }
