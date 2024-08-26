@@ -1,8 +1,9 @@
 export interface ProjectBody {
     name: string;
     description: string;
-    dueDate: string;
+    status: 'active' | 'on hold' | 'completed';
+    dueDate: Date;
     userId: string;
 }
 
-export type ProjectUpdatable = Partial<Pick<ProjectBody, 'name' | 'description' | 'dueDate'>>;
+export type ProjectUpdatable = Partial<Pick<ProjectBody, 'name' | 'description' | 'dueDate' | 'status'>>;

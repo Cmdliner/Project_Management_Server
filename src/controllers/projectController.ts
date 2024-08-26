@@ -3,13 +3,13 @@ import type { AppRequest } from "../interfaces/AppRequest";
 import ProjectService from "../services/projectService";
 import type { TaskBody, TaskUpdatable } from "../interfaces/Task";
 import TaskService from "../services/taskService";
-import type { ProjectUpdatable } from "../interfaces/ProjectBody";
+import type { ProjectBody, ProjectUpdatable } from "../interfaces/ProjectBody";
 
 
 const ProjectController = {
     create: async (req: AppRequest, res: Response) => {
         try {
-            const { name, description, dueDate, status } = req.body;
+            const { name, description, dueDate, status }: ProjectBody = req.body;
             await ProjectService.create(name, dueDate, req.user?.id as string, status, description);
             return res.status(201).json({ success: "Project creation successful" });
         } catch (error) {
@@ -49,13 +49,14 @@ const ProjectController = {
     update: async (req: AppRequest, res: Response) => {
         try {
             const { projectID } = req.params;
-            const { name, description, dueDate } = req.body;
-            const updateData: Partial<Pick<ProjectUpdatable, 'name' | 'description' | 'dueDate'>> = {};
+            const { name, description, dueDate, status }: ProjectUpdatable = req.body;
+            const updateData: Partial<ProjectUpdatable> = {};
 
             // !TODO => VALIDATION WITH JOI?
             if (name) updateData.name = name;
             if (description) updateData.description = description;
             if (dueDate) updateData.dueDate = dueDate;
+            if(status) updateData.status = status;
 
             const updatedProject = await ProjectService.update(projectID, updateData);
             return res
@@ -64,8 +65,6 @@ const ProjectController = {
                     success: "Project updated successcfully",
                     project: updatedProject,
                 });
-
-
         } catch (error) {
             if ((error as Error).name === "PrismaClientValidationError") {
                 return res.status(422).json({ error: "Error validating project update body" })
