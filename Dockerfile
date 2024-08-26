@@ -21,4 +21,6 @@ EXPOSE 4000
 
 RUN ["bunx", "prisma", "generate"]
 
+RUN ["bunx", "prisma", "db", "push"]
+
 CMD [ "bun", "run", "build:bun"]
