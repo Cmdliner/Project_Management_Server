@@ -4,6 +4,7 @@ import type { Response } from "express";
 import type { UserBody } from "../interfaces/User";
 import CreateToken from "../utils/createToken";
 import bcrypt from "bcryptjs";
+import { UserValidationSchema } from "../validations/auth.validation";
 
 const AuthController = {
 
@@ -12,6 +13,10 @@ const AuthController = {
             const { username, password }: UserBody = req.body as UserBody;
             if (!username || !password) {
                 return res.status(422).json({ error: `${username ? 'username' : 'password'} required!` })
+            }
+            const { error } = UserValidationSchema.validate({username, password});
+            if(error) {
+                return res.status(422).json({ error: error.details[0].message });
             }
             const newUser = await UserService.create(username, password);
             const authToken = CreateToken({ id: newUser.id, username: newUser.username });
