@@ -5,18 +5,14 @@ const prisma = new PrismaClient();
 
 const UserService = {
     create: async (username: string, password: string): Promise<User> => {
-        try {
             const hashedPassword = await hash(password, 10);
-            return prisma.user.create({
+            const newUser= await prisma.user.create({
                 data: {
                     username,
                     password: hashedPassword
                 }
             });
-        } catch (error) {
-            throw error;
-        }
-
+            return newUser;
     },
 
     findByUsername: async (username: string): Promise<User> => {
