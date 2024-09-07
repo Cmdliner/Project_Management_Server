@@ -41,7 +41,8 @@ const TaskService = {
     },
 
     remove: async (taskId: string, userId: string) => {
-        return prisma.task.delete({ where: { id: taskId, userId: userId } });
+        const deletedTask = await prisma.task.delete({ where: { id: taskId, userId: userId } });
+        return deletedTask;
     }
 }
 
