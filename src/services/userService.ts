@@ -15,7 +15,7 @@ const UserService = {
             });
             return newUser;
         } catch (error) {
-            throw { custom_error: true, message: "Invalid username or password" };
+            throw { custom_error: true, message: error };
         }
     },
 
