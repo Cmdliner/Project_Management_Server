@@ -5,14 +5,18 @@ const prisma = new PrismaClient();
 
 const UserService = {
     create: async (username: string, password: string): Promise<User> => {
+        try {
             const hashedPassword = await hash(password, 10);
-            const newUser= await prisma.user.create({
+            const newUser = await prisma.user.create({
                 data: {
                     username,
                     password: hashedPassword
                 }
             });
             return newUser;
+        } catch (error) {
+            throw { custom_error: true, message: "Invalid username or password" };
+        }
     },
 
     findByUsername: async (username: string): Promise<User> => {

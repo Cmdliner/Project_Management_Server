@@ -36,6 +36,9 @@ const AuthController = {
         });
     } catch (error) {
       console.error(error);
+      if((error as any).custom_error) {
+        return res.status(422).json({error: (error as any).message})
+      }
       return res.status(500).json({ error: "Error creating user" });
     }
   },
