@@ -1,12 +1,11 @@
-import type { NextFunction, Response } from "express";
-import type { AppRequest } from "../interfaces/AppRequest";
+import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import type { TokenPayload } from "../interfaces/TokenPayload";
 import UserService from "../services/userService";
 
 const AuthMiddleware = {
     
-    requireAuth: async (req: AppRequest, res: Response, next: NextFunction) => {
+    requireAuth: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const authToken = req.headers['authorization']?.split(' ')[1];
             if (!authToken) {

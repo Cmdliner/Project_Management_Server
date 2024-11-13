@@ -1,5 +1,4 @@
-import type { Response } from "express";
-import type { AppRequest } from "../interfaces/AppRequest";
+import type { Request, Response } from "express";
 import ProjectService from "../services/projectService";
 import type { TaskBody, TaskUpdatable } from "../interfaces/Task";
 import TaskService from "../services/taskService";
@@ -8,7 +7,7 @@ import { projectCreateValidation } from "../validations/project.validation";
 
 
 const ProjectController = {
-    create: async (req: AppRequest, res: Response) => {
+    create: async (req: Request, res: Response) => {
         try {
             const { name, description, dueDate, status }: ProjectBody = req.body;
             const { error } = projectCreateValidation.validate({
@@ -36,7 +35,7 @@ const ProjectController = {
         }
     },
 
-    findById: async (req: AppRequest, res: Response) => {
+    findById: async (req: Request, res: Response) => {
         try {
             const userId = req.user?.id as string;
             const { projectID } = req.params;
@@ -53,7 +52,7 @@ const ProjectController = {
 
     },
 
-    findByUser: async (req: AppRequest, res: Response) => {
+    findByUser: async (req: Request, res: Response) => {
         const userID = req.user?.id as string;
         const userProjects = await ProjectService.findByUser(userID);
 
@@ -64,7 +63,7 @@ const ProjectController = {
 
     },
 
-    update: async (req: AppRequest, res: Response) => {
+    update: async (req: Request, res: Response) => {
         try {
             const { projectID } = req.params;
             const { name, description, dueDate, status }: ProjectUpdatable = req.body;
@@ -92,7 +91,7 @@ const ProjectController = {
         }
     },
 
-    delete: async (req: AppRequest, res: Response) => {
+    delete: async (req: Request, res: Response) => {
         try {
             const userID = req.user?.id as string;
             const { projectID } = req.params;
@@ -105,7 +104,7 @@ const ProjectController = {
 
     },
 
-    addTask: async (req: AppRequest, res: Response) => {
+    addTask: async (req: Request, res: Response) => {
         const { projectID } = req.params;
         const userId = req.user?.id as string;
         const { name, description, status } = req.body;
@@ -133,7 +132,7 @@ const ProjectController = {
 
     },
 
-    updateTask: async (req: AppRequest, res: Response) => {
+    updateTask: async (req: Request, res: Response) => {
         try {
             const { taskID } = req.params;
             const { name, description, status } = req.body;
@@ -155,7 +154,7 @@ const ProjectController = {
         }
     },
 
-    deleteTask: async (req: AppRequest, res: Response) => {
+    deleteTask: async (req: Request, res: Response) => {
         try {
             const { taskID } = req.params;
             const userId = req.user?.id as string;

@@ -1,18 +1,19 @@
 {
   "name": "project_management_server",
   "module": "app.ts",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "dev": "bun --watch src/app.ts",
-    "build": "bunx prisma generate && bun src/app.ts",
+    "build": "npx prisma generate && tsc && npm src/app.js",
     "createEnv": "bun scripts/create_env.js"
   },
   "devDependencies": {
     "@types/bun": "latest",
     "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
     "@types/joi": "^17.2.3",
-    "prisma": "^5.18.0",
-    "@types/jsonwebtoken": "^9.0.6"
+    "@types/jsonwebtoken": "^9.0.6",
+    "prisma": "^5.18.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
