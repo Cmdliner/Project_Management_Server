@@ -4,7 +4,7 @@
   "type": "commonjs",
   "scripts": {
     "dev": "bun --watch src/app.ts",
-    "build": "npx prisma generate && tsc && npm dist/app.js",
+    "build": "npx prisma generate && tsc && node dist/app.js",
     "createEnv": "bun scripts/create_env.js"
   },
   "devDependencies": {
