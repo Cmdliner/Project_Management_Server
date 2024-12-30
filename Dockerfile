@@ -1,17 +1,13 @@
-FROM oven/bun
-
-# Install Node.js
-RUN apt update && apt install -y curl && \
-    curl -L https://raw.githubusercontent.com/tj/n/master/bin/n -o n && \
-    bash n 18 && \
-    rm n && \
-    npm install -g n
+FROM node:23
 
 WORKDIR /app
 
 COPY package.json ./
 
 COPY bun.lockb ./
+
+# Install Bun
+RUN curl -fsSL https://bun.sh/install | bash
 
 RUN ["bun", "install"]
 
